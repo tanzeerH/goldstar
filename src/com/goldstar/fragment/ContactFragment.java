@@ -1,6 +1,7 @@
 package com.goldstar.fragment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import android.app.AlertDialog;
@@ -187,8 +188,8 @@ public class ContactFragment extends Fragment {
 	}
 
 	public ArrayList<Contact> getNameEmailDetails() {
-		ArrayList<Contact> list = new ArrayList<Contact>();
-		HashSet<String> emlRecsHS = new HashSet<String>();
+		ArrayList<Contact> list = new ArrayList<Contact>();	
+		ArrayList<String> nameList=new ArrayList<String>();
 		Context context = getActivity();
 		ContentResolver cr = context.getContentResolver();
 		String[] PROJECTION = new String[] { ContactsContract.Contacts._ID, ContactsContract.Contacts.DISPLAY_NAME,
@@ -206,9 +207,12 @@ public class ContactFragment extends Fragment {
 				String emlAddr = cur.getString(3);
 				long contactId = cur.getLong(4);
 				Log.e("email", name + emlAddr + contactId);
-
-				Contact contact = new Contact(name, contactId, emlAddr);
-				list.add(contact);
+				if(!nameList.contains(name))
+				{
+					nameList.add(name);
+					Contact contact = new Contact(name, contactId, emlAddr);
+					list.add(contact);
+				}
 			} while (cur.moveToNext());
 		}
 

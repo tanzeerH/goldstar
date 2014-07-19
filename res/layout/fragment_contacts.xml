@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Connect With 4 friends with whome you&apos;re most likely to go to events."
+        android:text="Connect With 4 friends with whom you&apos;re most likely to go to events."
         android:textSize="20sp"
         android:gravity="center"
         android:textStyle="bold" />
