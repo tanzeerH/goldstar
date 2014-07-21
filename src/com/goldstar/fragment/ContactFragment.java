@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import android.R.color;
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
@@ -13,11 +15,15 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.CommonDataKinds.Email;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +32,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -37,12 +44,14 @@ import com.goldstar.model.Contact;
 import com.goldstar.utils.InvitePost;
 import com.goldstar.utils.Utils;
 
+@SuppressLint("NewApi")
+@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 public class ContactFragment extends Fragment {
 
 	private ListView listView;
 	private ContactListadapter cListAdapter;
 	private ArrayList<Contact> contactList;
-	ImageView imageView1, imageView2, imageView3, imageView4;
+	ImageButton imageBtn1,imageBtn2,imageBtn3,imageBtn4;
 	Bitmap defaultUserPic;
 	TextView tvNextStep;
 
@@ -54,10 +63,10 @@ public class ContactFragment extends Fragment {
 		View v = inflater.inflate(R.layout.fragment_contacts, null, false);
 		defaultUserPic = BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.ic_contact_picture2);
 		Log.e("msg", "contact_fragment");
-		imageView1 = (ImageView) v.findViewById(R.id.iv1);
-		imageView2 = (ImageView) v.findViewById(R.id.iv2);
-		imageView3 = (ImageView) v.findViewById(R.id.iv3);
-		imageView4 = (ImageView) v.findViewById(R.id.iv4);
+		imageBtn1 = (ImageButton) v.findViewById(R.id.iv1);
+		imageBtn2 = (ImageButton) v.findViewById(R.id.iv2);
+		imageBtn3 = (ImageButton) v.findViewById(R.id.iv3);
+		imageBtn4 = (ImageButton) v.findViewById(R.id.iv4);
 		listView = (ListView) v.findViewById(R.id.listView1);
 		tvNextStep = (TextView) v.findViewById(R.id.tvNextStep);
 		contactList = getNameEmailDetails();
@@ -95,22 +104,41 @@ public class ContactFragment extends Fragment {
 		return v;
 	}
 
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	private void setImageInSelectedList(long Id) {
 		int pos = Utils.selectedContact.size();
 		Log.e("pos", "" + pos);
-		if (pos == 1) {
-			imageView1.setImageBitmap(getContactPhoto(Id));
+		int sdk = android.os.Build.VERSION.SDK_INT;
+		if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+			if (pos == 1) {
 
-		} else if (pos == 2) {
-			imageView2.setImageBitmap(getContactPhoto(Id));
+				imageBtn1.setBackgroundDrawable(new BitmapDrawable(getResources(),getContactPhoto(Id)));
+			} else if (pos == 2) {
+				imageBtn2.setBackgroundDrawable(new BitmapDrawable(getResources(),getContactPhoto(Id)));
+			} else if (pos == 3) {
+				imageBtn3.setBackgroundDrawable(new BitmapDrawable(getResources(),getContactPhoto(Id)));
 
-		} else if (pos == 3) {
-			imageView3.setImageBitmap(getContactPhoto(Id));
+			} else if (pos == 4) {
+				imageBtn4.setBackgroundDrawable(new BitmapDrawable(getResources(),getContactPhoto(Id)));
 
-		} else if (pos == 4) {
-			imageView4.setImageBitmap(getContactPhoto(Id));
-
+			}
 		}
+		else
+		{
+			if (pos == 1) {
+
+				imageBtn1.setBackground(new BitmapDrawable(getResources(),getContactPhoto(Id)));
+			} else if (pos == 2) {
+				imageBtn2.setBackground(new BitmapDrawable(getResources(),getContactPhoto(Id)));
+			} else if (pos == 3) {
+				imageBtn3.setBackground(new BitmapDrawable(getResources(),getContactPhoto(Id)));
+
+			} else if (pos == 4) {
+				imageBtn4.setBackground(new BitmapDrawable(getResources(),getContactPhoto(Id)));
+
+			}
+		}
+		
 
 	}
 
@@ -138,26 +166,78 @@ public class ContactFragment extends Fragment {
 	}
 
 	private void invalidateImageList() {
-		for (int i = 0; i < Utils.selectedContact.size(); i++) {
+		/*for (int i = 0; i < Utils.selectedContact.size(); i++) {
 			if (i == 0) {
-				imageView1.setImageBitmap(getContactPhoto(Utils.selectedContact.get(i).getContactId()));
+				imageBtn1.setImageBitmap(getContactPhoto(Utils.selectedContact.get(i).getContactId()));
 			} else if (i == 1) {
-				imageView2.setImageBitmap(getContactPhoto(Utils.selectedContact.get(i).getContactId()));
+				imageBtn2.setImageBitmap(getContactPhoto(Utils.selectedContact.get(i).getContactId()));
 			} else if (i == 2) {
-				imageView3.setImageBitmap(getContactPhoto(Utils.selectedContact.get(i).getContactId()));
+				imageBtn3.setImageBitmap(getContactPhoto(Utils.selectedContact.get(i).getContactId()));
 			} else if (i == 3) {
-				imageView4.setImageBitmap(getContactPhoto(Utils.selectedContact.get(i).getContactId()));
+				imageBtn4.setImageBitmap(getContactPhoto(Utils.selectedContact.get(i).getContactId()));
 			}
 		}
 		for (int i = Utils.selectedContact.size(); i < 4; i++) {
 			if (i == 0) {
-				imageView1.setImageBitmap(null);
+				imageBtn1.setBackground(null);
 			} else if (i == 1) {
-				imageView2.setImageBitmap(null);
+				imageBtn2.setBackground(null);
 			} else if (i == 2) {
-				imageView3.setImageBitmap(null);
+				imageBtn3.setBackground(null);
 			} else if (i == 3) {
-				imageView4.setImageBitmap(null);
+				imageBtn4.setBackground(null);
+			}
+		}*/
+		int sdk = android.os.Build.VERSION.SDK_INT;
+		if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+			
+			for (int i = 0; i < Utils.selectedContact.size(); i++) {
+				if (i == 0) {
+					imageBtn1.setBackgroundDrawable(new BitmapDrawable(getResources(),getContactPhoto(Utils.selectedContact.get(i).getContactId())));
+				} else if (i == 1) {
+					imageBtn2.setBackgroundDrawable(new BitmapDrawable(getResources(),getContactPhoto(Utils.selectedContact.get(i).getContactId())));
+				} else if (i == 2) {
+					imageBtn3.setBackgroundDrawable(new BitmapDrawable(getResources(),getContactPhoto(Utils.selectedContact.get(i).getContactId())));
+				} else if (i == 3) {
+					imageBtn4.setBackgroundDrawable(new BitmapDrawable(getResources(),getContactPhoto(Utils.selectedContact.get(i).getContactId())));
+				}
+			}
+			for (int i = Utils.selectedContact.size(); i < 4; i++) {
+				if (i == 0) {
+					imageBtn1.setBackgroundResource(R.drawable.background);
+				} else if (i == 1) {
+					imageBtn2.setBackgroundResource(R.drawable.background);
+				} else if (i == 2) {
+					imageBtn3.setBackgroundResource(R.drawable.background);
+				} else if (i == 3) {
+					imageBtn4.setBackgroundResource(R.drawable.background);
+				}
+			}
+
+		}
+		else
+		{
+			for (int i = 0; i < Utils.selectedContact.size(); i++) {
+				if (i == 0) {
+					imageBtn1.setBackground(new BitmapDrawable(getResources(),getContactPhoto(Utils.selectedContact.get(i).getContactId())));
+				} else if (i == 1) {
+					imageBtn2.setBackground(new BitmapDrawable(getResources(),getContactPhoto(Utils.selectedContact.get(i).getContactId())));
+				} else if (i == 2) {
+					imageBtn3.setBackground(new BitmapDrawable(getResources(),getContactPhoto(Utils.selectedContact.get(i).getContactId())));
+				} else if (i == 3) {
+					imageBtn4.setBackground(new BitmapDrawable(getResources(),getContactPhoto(Utils.selectedContact.get(i).getContactId())));
+				}
+			}
+			for (int i = Utils.selectedContact.size(); i < 4; i++) {
+				if (i == 0) {
+					imageBtn1.setBackgroundResource(R.drawable.background);
+				} else if (i == 1) {
+					imageBtn2.setBackgroundResource(R.drawable.background);
+				} else if (i == 2) {
+					imageBtn3.setBackgroundResource(R.drawable.background);
+				} else if (i == 3) {
+					imageBtn4.setBackgroundResource(R.drawable.background);
+				}
 			}
 		}
 

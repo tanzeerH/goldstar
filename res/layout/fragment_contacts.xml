@@ -8,9 +8,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="Connect With 4 friends with whom you&apos;re most likely to go to events."
         android:textSize="20sp"
-        android:gravity="center"
         android:textStyle="bold" />
 
     <LinearLayout
@@ -19,7 +19,7 @@
         android:orientation="horizontal"
         android:padding="20dp" >
 
-        <ImageView
+        <ImageButton
             android:id="@+id/iv1"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -27,7 +27,7 @@
             android:layout_weight="1"
             android:background="#cccccc" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/iv2"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -35,7 +35,7 @@
             android:layout_weight="1"
             android:background="#cccccc" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/iv3"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -43,7 +43,7 @@
             android:layout_weight="1"
             android:background="#cccccc" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/iv4"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -66,9 +66,9 @@
         android:layout_gravity="center"
         android:layout_weight="1"
         android:gravity="center"
-        android:textSize="20dp"
-       	android:textColor="@android:color/holo_blue_dark"
         android:text="Next Step"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="20dp"
         android:textStyle="bold" />
 
 </LinearLayout>
